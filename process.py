@@ -18,11 +18,6 @@ count=0
 for child in root:
     count+=1
     print(child.find("documentName").text)
-    segments=[]
-    for segment in child.find("segments"):
-        segInfo=(segment.find("depthScore").text,segment.find("text").text)
-        segments.append(segInfo)
-        segment.find("depthScore").text
     for b in bookList:
         if(b.code==child.find("documentName").text):
             b.segList=segments
