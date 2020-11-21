@@ -288,7 +288,7 @@ Yang, Yinfei, et al. \"Improving multilingual sentence embedding using
 bi-directional dual encoder with additive margin softmax.\" *arXiv
 preprint arXiv:1902.08564* (2019).
 
-**We both affirm that we adhered to the honor code in the report.**
+
 
 [^1]: See Da, Nan Z. \"The computational case against computational
     literary studies.\" *Critical inquiry* 45.3 (2019): 601-639.
