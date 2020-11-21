@@ -108,7 +108,7 @@ advantage of using the ECCO-TCP corpra is that it is cleaned up by
 librarians and scholars, so there is very little Optical Character
 Recognition (OCR) issues with wrong transcriptions of the texts.\
 \
-![](.//media/image4.png){width="6.5in" height="3.5in"}
+![](.//media/image4.png)
 
 **Table 1: ECCO-TCP CSV File describing all the data in the corpus.**
 
@@ -134,7 +134,7 @@ books oftentimes does not pick up the long S.
 
 Examples of this sort of error look like this:
 
-![](.//media/image2.png){width="6.5in" height="0.4027777777777778in"}
+![](.//media/image2.png)
 
 After pulling the texts through the cleanup, we further processed by
 removing the title page and other paratextual material, then removing
@@ -184,8 +184,7 @@ is due to the nature of the sentence-level embeddings - the
 representation learnt is more about the similarity in the
 stylistic/linguistic/grammatical/lexical sense than about the plot.
 
-![](.//media/image3.png){width="6.348958880139983in"
-height="3.1956419510061242in"}**\
+![](.//media/image3.png)**\
 Figure 1: Results of Initial Method Across Different Texts (1.0 being
 closest to the original text) USE-Universal Sentence Encoder.**
 
@@ -211,8 +210,7 @@ The model performs exceptionally well on the validation and test sets,
 identifying the adaptations (denoted by class 1 in Figure 2) with near
 perfect precision and recall.
 
-![](.//media/image1.png){width="4.623790463692038in"
-height="1.5150962379702537in"}\
+![](.//media/image1.png)\
 **Figure 2: The classification results from the mode. 0 denotes
 non-adaptations and 1 denotes adaptations**\
 **Current Conclusions and Future Work**
