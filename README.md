@@ -1,5 +1,5 @@
 
-**An Adaptive Methodology: Machine Learning and Literary Adaptation**
+***An Adaptive Methodology: Machine Learning and Literary Adaptation***
 
 Grant Glass and Saksham Jain
 
