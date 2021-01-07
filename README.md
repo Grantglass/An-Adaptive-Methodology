@@ -5,16 +5,16 @@ Grant Glass
 
 **Abstract:**
 
-Using one of the most adapted texts in history, *Robinson Crusoe,* we
+Using one of the most adapted texts in history, *Robinson Crusoe,* I
 ask whether or not a computer can find adaptations that scholars have
 yet to identify. Through testing the effectiveness of different machine
 learning techniques for text embedding on small groups of full-length
-texts, we determine the best model for our task, the universal sentence
+texts, I determine the best model for our task, the universal sentence
 encoder, and then use it to build a deep neural network based binary
-classifier trained on a large dataset of adaptation and random texts. We
+classifier trained on a large dataset of adaptation and random texts. I
 attempt to *implicitly* teach the computer the plot of Crusoe, instead
 of making decisions based on stylistic details, as is a pitfall of
-traditional techniques. We hope this novel pipeline will help other
+traditional techniques. I hope this novel pipeline will help other
 scholars work with large units of text at the plot - level.
 
 **Problem Description:**
@@ -55,11 +55,11 @@ world. The main problem that this project started with is how you can
 get a vast enough corpus of material, but still be able to ask specific
 questions that can actually enlighten literary scholarship.
 
-This problem lead us to look at Daniel Defoe's *The Life and Surprising
+This problem lead me to look at Daniel Defoe's *The Life and Surprising
 Adventures of Robinson Crusoe*[^2], which has never been out of print in
 its over three-hundred year print history and has amassed thousands of
 editions -- not to mention the plethora of movies and T.V. shows. Using
-this text allows us to gain enough material to make these machine
+this text allows one to gain enough material to make these machine
 learning algorithms viable. The next problem was creating a research
 question easy enough to compute, but complex enough for humanities
 scholars to see the merit in this type of analysis. When one begins to
@@ -77,16 +77,16 @@ settings change (like *The Martian)*? Teaching a machine learning
 algorithm the story of Crusoe (by feeding it different adaptations)
 could it start to distinguish between a random story and a Crusoe like
 story? Could it identify new adaptations of Crusoe that have yet to be
-discovered? Our project hopes to begin to answer these questions.
+discovered? My project hopes to begin to answer these questions.
 
 **Data Description**
 
-In our early experiments to determine the suitable text embedding
-technique, we used four different texts: the "Original Text" which is
+In my early experiments to determine the suitable text embedding
+technique, I used four different texts: the "Original Text" which is
 the 1719 first edition of *Robinson Crusoe* by Daniel Defoe, a "close"
 adaptation[^4] of a 1918 text called, *The Dog Crusoe,* a "far" science
 fiction adaptation[^5] called *The Happy Castaway* (1965)*,* and a
-random text, *Pride and Prejudice* by Jane Austen (1813). We chose the
+random text, *Pride and Prejudice* by Jane Austen (1813). I chose the
 text based on Grant's scholarship of Robinson Crusoe: the "close"
 adaptation is one that follows the exact storyline, but changes the
 human Crusoe into a talking dog, the far adaptation takes the same plot,
@@ -125,7 +125,7 @@ middle of nowhere (not on an island).
 **Preprocessing**
 
 After downloading the Robinson Crusoe texts from the Hathitrust Research
-Center, we used [unzipFiles.py]{.underline} and
+Center, I used [unzipFiles.py]{.underline} and
 [unzipping.py]{.underline} to unzip the files and ensure all the file
 names were standardized to the way they showed up on the CSV.
 Additionally,we used Ted Underwood's Python library for cleaning up 18th
@@ -136,7 +136,7 @@ Examples of this sort of error look like this:
 
 ![](.//media/image2.png)
 
-After pulling the texts through the cleanup, we further processed by
+After pulling the texts through the cleanup, I further processed by
 removing the title page and other paratextual material, then removing
 any strange not UTF-8 characters and inappropriate spacing. By using
 regular expressions, we removed any weird digits in the string
@@ -146,36 +146,36 @@ re.sub(r\'\[\^a-zA-Z0-9. /\"\]\', r\'\', txt\_file\_as\_string)
 
 **Core Methodology**
 
-All of our initial methods are outlined in the
-[similarity.ipynb]{.underline} notebook. Our first experiment to
-determine which method would generate the best text embeddings for our
+All of my initial methods are outlined in the
+[similarity.ipynb]{.underline} notebook. My first experiment to
+determine which method would generate the best text embeddings for the
 task was with the sklearn TfidfVectorizer to build the embeddings of our
-training data[^9]. We calculated the cosine similarity scores for each
+training data[^9]. I calculated the cosine similarity scores for each
 of the texts to the reference text (i.e. the Original Text) using
-sklearn's metrics-pairwise package. Then we experimented with Google
+sklearn's metrics-pairwise package. Then I experimented with Google
 Research's Universal Sentence Encoder (USE)[^10]. While originally meant
 for generation of sentence-level embeddings, the model does not actually
 require a set maximum sequence length, which is a useful functionality
 that allows us to represent full-length texts of varying lengths as a
 fixed-dimensional embedding layer. The USE directly uses the encoding
-sub-graph of the original transformer architecture. Lastly, we used
+sub-graph of the original transformer architecture. Lastly, I used
 BERT, described in Jacob Devin et al.'s \"Bert: Pre-training of deep
 bidirectional transformers for language understanding.\" to obtain
 sentence-level embeddings. Specifically, we used UKPLab\'s
-implementation[^11]. In this method, we chose to tokenize each text into
-sentences first (because important information might be lost if we allow
+implementation[^11]. In this method, I chose to tokenize each text into
+sentences first (because important information might be lost if I allow
 BERT to automatically truncate the input sequence after a max length of
-512 tokens), and then averaged the resulting similarity scores over the
+512 tokens-words), and then averaged the resulting similarity scores over the
 entire text.
 
-In the end, we chose to work with the USE embeddings because it gave
+In the end, I chose to work with the USE embeddings because it gave
 more context-aware, and as a result, discriminatory embeddings than the
 other candidates. Notice (in Figure 1) that the text determined as
-\'close\' to the reference text by Grant (human expert), while indeed
+\'close\' to the reference text by me (human expert), while indeed
 the closest, still showed a cosine similarity of only 0.528. Further,
 the texts determined as \'random\' and \'far\' were also significantly
 further from \'close\' as well as the reference text, but very close to
-each other - which is what we might expect from a model which has learnt
+each other - which is what one might expect from a model which has learnt
 semantic relationships particularly well (after all, why should *Pride
 and Prejudice* be closer to *Robinson Cruso*e than *The Happy Castaway*
 - both are unrelated by plot). Note that the BERT embeddings, *Pride and
@@ -188,20 +188,20 @@ stylistic/linguistic/grammatical/lexical sense than about the plot.
 Figure 1: Results of Initial Method Across Different Texts (1.0 being
 closest to the original text) USE-Universal Sentence Encoder.**
 
-Ultimately, we built a neural network classifier with 2 hidden layers on
+Ultimately, I built a neural network classifier with 2 hidden layers on
 top of the Universal Sentence Encoder embedding layer in order to
 classify between the Adaptations and Random (i.e. Not-Adaptation texts).
-First, we build a dataset with an equal number of Adaptations and
+First, I build a dataset with an equal number of Adaptations and
 Non-Adaptations are present) through the code in
 [dataset.ipynb]{.underline} with both classes containing 1484 samples
-each. Then we randomly split it into 70% training data, and 15% each of
-validation and testing data. We implement the classifier model in Keras
+each. Then I randomly split it into 70% training data, and 15% each of
+validation and testing data. I implemented the classifier model in Keras
 in the [train.ipynb]{.underline} notebook, which takes each of the texts
 in the training dataset as an input string, outputs a 512-dimensional
 embedding layer through USE, which is then passed through 2 densely
 connected layers with Relu activations and 256 and 32 neurons each
 before outputting the resulting class through the final softmax layer.
-We use the default learning rate and the Adam optimizer and notice that
+I use the default learning rate and the Adam optimizer and notice that
 the model converges very quickly (within 10 epochs).
 
 **Final Results**
@@ -215,7 +215,7 @@ perfect precision and recall.
 non-adaptations and 1 denotes adaptations**\
 **Current Conclusions and Future Work**
 
-The potential pitfall with this technique is that we will not be able to
+The potential pitfall with this technique is that one will not be able to
 measure how similar a text is to *Robinson Crusoe*, but that is what the
 Data+ team did already, by using this technique to look at a larger
 window of text than a sentence, we can find works that share a similar
