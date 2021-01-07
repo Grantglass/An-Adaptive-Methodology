@@ -1,7 +1,7 @@
 
 ***An Adaptive Methodology: Machine Learning and Literary Adaptation***
 
-Grant Glass
+
 
 **Abstract:**
 
