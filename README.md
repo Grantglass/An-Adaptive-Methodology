@@ -1,7 +1,7 @@
 
 ***An Adaptive Methodology: Machine Learning and Literary Adaptation***
 
-Grant Glass and Saksham Jain
+Grant Glass
 
 **Abstract:**
 
@@ -323,7 +323,6 @@ preprint arXiv:1902.08564* (2019).
     change*.
 
 [^9]: [[https://scikit-learn.org/stable/modules/classes.html\#module-sklearn.feature\_extraction.text]{.underline}](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.feature_extraction.text)
-    We used the S
 
 [^10]: [[https://tfhub.dev/google/universal-sentence-encoder/4]{.underline}](https://tfhub.dev/google/universal-sentence-encoder/4)
     -the latest pretrained model available, updated 2020. See Yang,
