@@ -1,7 +1,7 @@
 
 ***An Adaptive Methodology: Machine Learning and Literary Adaptation***
 
-Grant Glass
+
 
 **Abstract:**
 
@@ -87,7 +87,7 @@ the 1719 first edition of *Robinson Crusoe* by Daniel Defoe, a "close"
 adaptation[^4] of a 1918 text called, *The Dog Crusoe,* a "far" science
 fiction adaptation[^5] called *The Happy Castaway* (1965)*,* and a
 random text, *Pride and Prejudice* by Jane Austen (1813). I chose the
-text based on Grant's scholarship of Robinson Crusoe: the "close"
+text based on my scholarship of Robinson Crusoe: the "close"
 adaptation is one that follows the exact storyline, but changes the
 human Crusoe into a talking dog, the far adaptation takes the same plot,
 but everything about the text is changed, and the random text is
