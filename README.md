@@ -19,10 +19,6 @@ scholars work with large units of text at the plot - level.
 
 **Problem Description:**
 
-In light of recent shifts in undergraduate enrolment and funding, the
-humanities are in crisis. While this sort of forecast might prompt the
-humanities to reevaluate its methodology, there hasn't been a widely
-accepted shift in the methodology of literary analysis since the 1980s.
 Works like, Daniel Shore's *Cyberformalism: Histories of Linguistic
 Forms in the Digital Archive,* Andrew Piper's. *Enumerations: data and
 literary study,* and Ted Underwood's *Distant horizons: digital evidence
