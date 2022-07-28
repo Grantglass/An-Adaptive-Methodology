@@ -84,12 +84,10 @@ discovered? My project hopes to begin to answer these questions.
 In my early experiments to determine the suitable text embedding
 technique, I used four different texts: the "Original Text" which is
 the 1719 first edition of *Robinson Crusoe* by Daniel Defoe, a "close"
-adaptation[^4] of a 1918 text called, *The Dog Crusoe,* a "far" science
+adaptation[^4] of Jenichiro Oyabe’s *A Japanese Robinson Crusoe* a "far" science
 fiction adaptation[^5] called *The Happy Castaway* (1965)*,* and a
 random text, *Pride and Prejudice* by Jane Austen (1813). I chose the
-text based on my scholarship of Robinson Crusoe: the "close"
-adaptation is one that follows the exact storyline, but changes the
-human Crusoe into a talking dog, the far adaptation takes the same plot,
+text based on my scholarship of Robinson Crusoe: the “close” adaptation is one that follows the exact storyline, but reimagines the story as a Japanese man in America, the far adaptation takes the same plot,
 but everything about the text is changed, and the random text is
 something similar stylistically, but has no character or plot similarity
 to Crusoe.
@@ -177,9 +175,9 @@ the texts determined as \'random\' and \'far\' were also significantly
 further from \'close\' as well as the reference text, but very close to
 each other - which is what one might expect from a model which has learnt
 semantic relationships particularly well (after all, why should *Pride
-and Prejudice* be closer to *Robinson Cruso*e than *The Happy Castaway*
+and Prejudice* be closer to *Robinson Crusoe* than *The Happy Castaway*
 - both are unrelated by plot). Note that the BERT embeddings, *Pride and
-Prejudice* turned out to be closer to *Robinson Cruso*e which we posit
+Prejudice* turned out to be closer to *Robinson Crusoe* which I posit
 is due to the nature of the sentence-level embeddings - the
 representation learnt is more about the similarity in the
 stylistic/linguistic/grammatical/lexical sense than about the plot.
