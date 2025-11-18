@@ -7,9 +7,10 @@ torchvision>=0.15.0
 
 # Text Processing & Embeddings
 sentence-transformers>=2.2.2
-transformers>=4.35.0
+transformers>=4.40.0  # Updated for latest LLMs (Llama 3.2, Phi-3, Gemma, Qwen)
 accelerate>=0.24.0  # For distributed training
 datasets>=2.14.0  # Hugging Face datasets
+bitsandbytes>=0.41.0  # For 4-bit quantization of LLMs
 nltk>=3.8.1
 
 # Machine Learning
