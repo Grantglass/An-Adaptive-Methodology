@@ -11,6 +11,7 @@ transformers>=4.40.0  # Updated for latest LLMs (Llama 3.2, Phi-3, Gemma, Qwen)
 accelerate>=0.24.0  # For distributed training
 datasets>=2.14.0  # Hugging Face datasets
 bitsandbytes>=0.41.0  # For 4-bit quantization of LLMs
+InstructorEmbedding>=1.0.1  # For instructor embeddings
 nltk>=3.8.1
 
 # Machine Learning
