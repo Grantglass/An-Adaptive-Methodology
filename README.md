@@ -206,7 +206,44 @@ perfect precision and recall.
 
 ![](.//media/image1.png)\
 **Figure 2: The classification results from the mode. 0 denotes
-non-adaptations and 1 denotes adaptations**\
+non-adaptations and 1 denotes adaptations**
+
+**REST API for Production Deployment**
+
+A production-ready REST API has been developed to make the Robinson Crusoe adaptation detection models accessible via HTTP endpoints. The API is built with FastAPI and includes:
+
+- **Single Prediction**: Analyze individual texts for adaptation detection
+- **Batch Processing**: Process up to 100 texts in a single request
+- **Similarity Scoring**: Calculate semantic similarity to Robinson Crusoe (0-100 scale)
+- **File Upload**: Upload text files for analysis
+- **Health Monitoring**: Built-in health checks and usage statistics
+- **Docker Support**: Containerized deployment with Docker Compose
+- **Interactive Documentation**: Automatic OpenAPI/Swagger docs at `/docs`
+
+**Quick Start:**
+```bash
+# Local development
+uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
+
+# Docker deployment
+docker-compose up -d
+```
+
+**Example Usage:**
+```python
+import requests
+
+response = requests.post(
+    "http://localhost:8000/predict",
+    json={"text": "A sailor is shipwrecked on a deserted island..."}
+)
+result = response.json()
+print(f"Is adaptation: {result['is_adaptation']}")
+print(f"Confidence: {result['confidence']:.2%}")
+```
+
+For complete API documentation, examples, and deployment instructions, see `api/README.md`.
+
 **Current Conclusions and Future Work**
 
 The potential pitfall with this technique is that one will not be able to
