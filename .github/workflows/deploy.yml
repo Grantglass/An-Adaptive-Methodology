@@ -1,0 +1,108 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  deploy-api:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Log in to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: |
+          ghcr.io/${{ github.repository }}:latest
+          ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+
+    - name: Deploy notification
+      run: |
+        echo "Deployment completed for ${{ github.ref_name }}"
+        echo "Environment: ${{ github.event.inputs.environment || 'production' }}"
+
+  deploy-streamlit:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.environment == 'production' || startsWith(github.ref, 'refs/tags/')
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy to Streamlit Cloud
+      run: |
+        echo "Streamlit app can be deployed to Streamlit Cloud"
+        echo "Visit: https://streamlit.io/cloud"
+        echo "Connect your repository and select app.py"
+      continue-on-error: true
+
+  create-release:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: Release ${{ github.ref_name }}
+        body: |
+          ## Robinson Crusoe Adaptation Detection - ${{ github.ref_name }}
+
+          ### What's New
+          - Production-ready REST API
+          - Interactive Streamlit web interface
+          - Docker containerization
+          - Comprehensive test suite
+
+          ### Quick Start
+          ```bash
+          docker-compose up -d
+          ```
+
+          ### API Endpoints
+          - `POST /predict` - Single text prediction
+          - `POST /batch` - Batch predictions
+          - `POST /similarity` - Similarity scoring
+          - `GET /docs` - Interactive API documentation
+
+          ### Web Interface
+          ```bash
+          streamlit run app.py
+          ```
+
+          See README.md and api/README.md for complete documentation.
+        draft: false
+        prerelease: false

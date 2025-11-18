@@ -58,3 +58,6 @@ python-multipart>=0.0.6  # For file uploads
 pytest>=7.4.0
 pytest-cov>=4.1.0
 httpx>=0.26.0  # For TestClient
+
+# Web Interface (Streamlit)
+streamlit>=1.30.0
