@@ -1,0 +1,69 @@
+COMPUTATIONAL LINGUISTICS JOURNAL SUBMISSION METADATA
+
+================================================================================
+TITLE
+================================================================================
+
+Plot-Level Semantic Similarity Detection in Literary Texts:
+A Benchmark for Long-Document Sentence Encoders
+
+================================================================================
+AUTHORS AND AFFILIATIONS
+================================================================================
+
+TODO: Replace with actual author information
+
+Author 1: [Your Name]
+Affiliation: [Your Institution], [Department]
+Email: [your.email@institution.edu]
+
+Author 2: [Collaborator Name] (if applicable)
+Affiliation: [Collaborator Institution]
+Email: [collab.email@institution.edu]
+
+Contact Author: [Your Name]
+Contact Email: [your.email@institution.edu]
+
+================================================================================
+ABSTRACT (250 words)
+================================================================================
+
+We introduce a novel task for evaluating sentence encoders: detecting plot-level semantic similarity in full-length literary texts, where surface-level lexical and stylistic features are deliberately varied. Using Robinson Crusoe adaptations (1719-1903) as a case study, we construct a balanced binary classification dataset of 2,968 texts where positive examples share core narrative structures (shipwreck, isolation, survival, self-reliance) but differ in vocabulary, style, setting, and character names. This task tests whether embeddings capture compositional semantics beyond word-level similarity. We systematically evaluate 15 embedding models across three architectural paradigms: bi-encoders (USE, SBERT, E5, BGE), cross-encoders (BERT, RoBERTa), and encoder-decoder models (T5, FLAN-T5). Our bi-encoder baseline (Universal Sentence Encoder + neural classifier) achieves 99.3% accuracy with 0.18s inference time. We find that: (1) modern embeddings (E5, BGE) do not outperform USE for this task despite superior performance on standard benchmarks, (2) cross-encoders provide only 0.2% accuracy gain at 48× computational cost, (3) zero-shot LLMs achieve 76-91% accuracy, far below supervised baselines, and (4) architectural choice determines feasibility of corpus-scale analysis (bi-encoders: 39 days for 17M texts; cross-encoders: 4.7 years). We release our dataset, trained models, and evaluation code as a benchmark for long-document semantic similarity.
+
+================================================================================
+KEYWORDS
+================================================================================
+
+sentence embeddings, semantic similarity, plot detection, literary text analysis, document-level semantics, benchmark dataset, Universal Sentence Encoder
+
+================================================================================
+MANUSCRIPT TYPE
+================================================================================
+
+Research Article (Long Paper)
+Target length: 25-40 journal pages
+
+================================================================================
+SUBMISSION NOTES
+================================================================================
+
+- Manuscript includes comprehensive evaluation of 15 embedding models
+- Dataset of 2,968 full-length literary texts (mean: 8,742 tokens)
+- Code and data publicly available at: https://github.com/[your-username]/An-Adaptive-Methodology
+- Uses public-domain texts (pre-1920) - no copyright issues
+- Single-blind submission (author information included in manuscript)
+
+================================================================================
+DATA AND CODE AVAILABILITY
+================================================================================
+
+GitHub Repository: https://github.com/[your-username]/An-Adaptive-Methodology
+
+Includes:
+- Complete dataset (2,968 texts with train/val/test splits)
+- Preprocessing scripts
+- Trained model weights (USE + MLP)
+- Evaluation notebooks for all 15 models
+- Reproducibility documentation
+
+================================================================================
