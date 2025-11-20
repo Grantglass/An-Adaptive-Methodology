@@ -4,31 +4,25 @@ COMPUTATIONAL LINGUISTICS JOURNAL SUBMISSION METADATA
 TITLE
 ================================================================================
 
-Plot-Level Semantic Similarity Detection in Literary Texts:
-A Benchmark for Long-Document Sentence Encoders
+Evaluating Sentence Encoders for Plot-Level Semantic Similarity:
+A Systematic Comparison of Bi-Encoders, Cross-Encoders, and LLMs
 
 ================================================================================
 AUTHORS AND AFFILIATIONS
 ================================================================================
 
-TODO: Replace with actual author information
+Author: Grant Glass
+Affiliation: University of North Carolina at Chapel Hill, Department of English and Comparative Literature
+Email: grantg@live.unc.edu
 
-Author 1: [Your Name]
-Affiliation: [Your Institution], [Department]
-Email: [your.email@institution.edu]
-
-Author 2: [Collaborator Name] (if applicable)
-Affiliation: [Collaborator Institution]
-Email: [collab.email@institution.edu]
-
-Contact Author: [Your Name]
-Contact Email: [your.email@institution.edu]
+Contact Author: Grant Glass
+Contact Email: grantg@live.unc.edu
 
 ================================================================================
 ABSTRACT (250 words)
 ================================================================================
 
-We introduce a novel task for evaluating sentence encoders: detecting plot-level semantic similarity in full-length literary texts, where surface-level lexical and stylistic features are deliberately varied. Using Robinson Crusoe adaptations (1719-1903) as a case study, we construct a balanced binary classification dataset of 2,968 texts where positive examples share core narrative structures (shipwreck, isolation, survival, self-reliance) but differ in vocabulary, style, setting, and character names. This task tests whether embeddings capture compositional semantics beyond word-level similarity. We systematically evaluate 15 embedding models across three architectural paradigms: bi-encoders (USE, SBERT, E5, BGE), cross-encoders (BERT, RoBERTa), and encoder-decoder models (T5, FLAN-T5). Our bi-encoder baseline (Universal Sentence Encoder + neural classifier) achieves 99.3% accuracy with 0.18s inference time. We find that: (1) modern embeddings (E5, BGE) do not outperform USE for this task despite superior performance on standard benchmarks, (2) cross-encoders provide only 0.2% accuracy gain at 48× computational cost, (3) zero-shot LLMs achieve 76-91% accuracy, far below supervised baselines, and (4) architectural choice determines feasibility of corpus-scale analysis (bi-encoders: 39 days for 17M texts; cross-encoders: 4.7 years). We release our dataset, trained models, and evaluation code as a benchmark for long-document semantic similarity.
+Recent embedding models (E5, BGE) dominate sentence-level semantic similarity benchmarks, but whether their performance transfers to document-level compositional semantic tasks remains unexplored. We introduce plot-level semantic similarity detection as an evaluation task that tests whether embeddings capture high-level narrative structure independent of lexical and stylistic features. Using Robinson Crusoe adaptations (1719-1903) as a case study, we construct a balanced binary classification dataset of 2,968 full-length texts where positive examples share core narrative patterns but differ in vocabulary, style, setting, and character names. We systematically evaluate 15 models across three architectural paradigms: bi-encoders (USE, SBERT, E5, BGE), cross-encoders (BERT, RoBERTa), and encoder-decoder models (T5, FLAN-T5), plus five recent LLMs (Llama, Mistral, Phi-3, Gemma, Qwen). Our key findings challenge conventional assumptions: (1) Universal Sentence Encoder (99.3% accuracy) outperforms modern embeddings (E5: 98.4%, BGE: 98.2%) despite inferior STS benchmark scores, revealing inverse correlation between benchmark rankings and our task; (2) cross-encoders provide only 0.2% gain at 48× computational cost, making them infeasible for corpus-scale analysis; (3) zero-shot LLMs achieve 76-91%, far below supervised baselines. We release our benchmark dataset, models, and code, and discuss implications for embedding model selection beyond standard benchmarks.
 
 ================================================================================
 KEYWORDS
@@ -47,11 +41,16 @@ Target length: 25-40 journal pages
 SUBMISSION NOTES
 ================================================================================
 
-- Manuscript includes comprehensive evaluation of 15 embedding models
+- Extends preliminary DH2022 conference presentation (Glass 2022) with 80% new content
+  * DH2022: Proof-of-concept with 3 models (TF-IDF, BERT, USE)
+  * This paper: Systematic evaluation of 15 models + LLMs across 3 architectural paradigms
+  * New contributions: STS benchmark transfer analysis, scalability analysis, theoretical investigation
+- Manuscript includes comprehensive evaluation with updated 2024 models (E5, BGE, Llama 3.2, Mistral, etc.)
 - Dataset of 2,968 full-length literary texts (mean: 8,742 tokens)
-- Code and data publicly available at: https://github.com/[your-username]/An-Adaptive-Methodology
+- Code and data publicly available at: https://github.com/Grantglass/An-Adaptive-Methodology
 - Uses public-domain texts (pre-1920) - no copyright issues
 - Single-blind submission (author information included in manuscript)
+- Proper acknowledgment of DH2022 presentation included in Introduction
 
 ================================================================================
 DATA AND CODE AVAILABILITY

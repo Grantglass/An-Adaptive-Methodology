@@ -22,18 +22,17 @@
 \usepackage{hyperref}
 
 % Title - 15pt bold, centered, 2.5cm from top (per CL journal style)
-\title{\Large\bfseries Plot-Level Semantic Similarity Detection in Literary Texts:\\
-A Benchmark for Long-Document Sentence Encoders}
+% Updated title to distinguish from DH2022 presentation and emphasize benchmark contribution
+\title{\Large\bfseries Evaluating Sentence Encoders for Plot-Level Semantic Similarity:\\
+A Systematic Comparison of Bi-Encoders, Cross-Encoders, and LLMs}
 
 % Authors - SINGLE-BLIND (not anonymous)
-% TODO: Replace with actual author information
 \author{
-Your Name$^1$ \and Collaborator Name$^2$ \\
+Grant Glass \\
 \\
-$^1$Your Institution, Department \\
-\texttt{your.email@institution.edu} \\
-$^2$Collaborator Institution \\
-\texttt{collab.email@institution.edu}
+University of North Carolina at Chapel Hill \\
+Department of English and Comparative Literature \\
+\texttt{grantg@live.unc.edu}
 }
 
 \date{}
@@ -44,16 +43,16 @@ $^2$Collaborator Institution \\
 
 % Abstract: 150-250 words (informative) - Current: ~250 words ✓
 \begin{abstract}
-We introduce a novel task for evaluating sentence encoders: detecting plot-level semantic similarity in full-length literary texts, where surface-level lexical and stylistic features are deliberately varied. Using Robinson Crusoe adaptations (1719-1903) as a case study, we construct a balanced binary classification dataset of 2,968 texts where positive examples share core narrative structures (shipwreck, isolation, survival, self-reliance) but differ in vocabulary, style, setting, and character names. This task tests whether embeddings capture compositional semantics beyond word-level similarity. We systematically evaluate 15 embedding models across three architectural paradigms: bi-encoders (USE, SBERT, E5, BGE), cross-encoders (BERT, RoBERTa), and encoder-decoder models (T5, FLAN-T5). Our bi-encoder baseline (Universal Sentence Encoder + neural classifier) achieves 99.3\% accuracy with 0.18s inference time. We find that: (1) modern embeddings (E5, BGE) do not outperform USE for this task despite superior performance on standard benchmarks, (2) cross-encoders provide only 0.2\% accuracy gain at 48× computational cost, (3) zero-shot LLMs achieve 76-91\% accuracy, far below supervised baselines, and (4) architectural choice determines feasibility of corpus-scale analysis (bi-encoders: 39 days for 17M texts; cross-encoders: 4.7 years). We release our dataset, trained models, and evaluation code as a benchmark for long-document semantic similarity.
+Recent embedding models (E5, BGE) dominate sentence-level semantic similarity benchmarks, but whether their performance transfers to document-level compositional semantic tasks remains unexplored. We introduce plot-level semantic similarity detection as an evaluation task that tests whether embeddings capture high-level narrative structure independent of lexical and stylistic features. Using Robinson Crusoe adaptations (1719-1903) as a case study, we construct a balanced binary classification dataset of 2,968 full-length texts where positive examples share core narrative patterns but differ in vocabulary, style, setting, and character names. We systematically evaluate 15 models across three architectural paradigms: bi-encoders (USE, SBERT, E5, BGE), cross-encoders (BERT, RoBERTa), and encoder-decoder models (T5, FLAN-T5), plus five recent LLMs (Llama, Mistral, Phi-3, Gemma, Qwen). Our key findings challenge conventional assumptions: (1) Universal Sentence Encoder (99.3\% accuracy) outperforms modern embeddings (E5: 98.4\%, BGE: 98.2\%) despite inferior STS benchmark scores, revealing inverse correlation between benchmark rankings and our task; (2) cross-encoders provide only 0.2\% gain at 48× computational cost, making them infeasible for corpus-scale analysis; (3) zero-shot LLMs achieve 76-91\%, far below supervised baselines. We release our benchmark dataset, models, and code, and discuss implications for embedding model selection beyond standard benchmarks.
 \end{abstract}
 
 \noindent\textbf{Keywords:} sentence embeddings, semantic similarity, plot detection, literary text analysis, document-level semantics, benchmark dataset, Universal Sentence Encoder
 
 \section{Introduction}
 
-Sentence embedding models—including Universal Sentence Encoder \cite{Cer2018}, Sentence-BERT \cite{Reimers2019}, and recent contrastive models like E5 \cite{Wang2022} and BGE \cite{Xiao2023}—are typically evaluated on semantic textual similarity (STS) benchmarks \cite{Cer2017SemEval} comprising sentence pairs with human-annotated similarity scores. However, these benchmarks test surface-level paraphrase detection rather than compositional semantic understanding across long documents.
+Sentence embedding models are typically evaluated on sentence-level semantic textual similarity (STS) benchmarks \cite{Cer2017SemEval,Muennighoff2023MTEB}, where recent contrastive models like E5 \cite{Wang2022} and BGE \cite{Xiao2023} achieve state-of-the-art performance. However, an open question remains: \textit{does performance on sentence-level paraphrase detection transfer to document-level compositional semantic tasks}—where texts share high-level structure but differ completely in surface features?
 
-We propose a novel evaluation paradigm: \textbf{plot-level semantic similarity}, where texts share high-level narrative structure while differing in all surface features. Consider these examples:
+We introduce \textbf{plot-level semantic similarity detection} as a challenging evaluation task that addresses this question. Unlike STS benchmarks that test lexical paraphrase, our task requires models to recognize narrative structure despite zero lexical overlap. Consider these examples:
 
 \begin{quote}
 \small
@@ -66,21 +65,25 @@ We propose a novel evaluation paradigm: \textbf{plot-level semantic similarity},
 
 Texts A-C share identical plot structure (isolation $\rightarrow$ survival $\rightarrow$ self-reliance) but have zero lexical overlap. Standard STS metrics fail: cosine similarity of word embeddings is near-random. Yet humans recognize all three as instances of the ``Robinson Crusoe plot.''
 
+\subsection{Building on Prior Work}
+
+This work extends the preliminary study by \citet{Glass2022DH} presented at DH2022, which demonstrated proof-of-concept that Universal Sentence Encoder could detect Robinson Crusoe adaptations with high accuracy by comparing USE to TF-IDF and BERT on a small pilot dataset. The present paper significantly extends that work by: (1) systematically evaluating 15 models across three architectural paradigms (vs. 3 models), (2) analyzing why USE outperforms modern embeddings (E5, BGE) optimized on 2024 benchmarks, (3) quantifying architectural constraints for corpus-scale analysis through scalability projections, and (4) evaluating recent instruction-tuned LLMs (Llama 3.2, Mistral 7B, etc.) released after 2022.
+
 \subsection{Contributions}
 
-We make four primary contributions:
+Building on the proof-of-concept by \citet{Glass2022DH}, we make four primary contributions:
 
 \begin{enumerate}
-    \item \textbf{New Task \& Dataset:} A balanced binary classification dataset testing plot-level semantic similarity on full-length texts (mean: 8,742 tokens), where positive class shares narrative structure but minimal lexical overlap with source text.
+    \item \textbf{Systematic Architectural Evaluation:} Comprehensive comparison of 15 models across three architectural paradigms (bi-encoders, cross-encoders, encoder-decoder models) plus recent LLMs, revealing that architectural choice determines computational feasibility for corpus-scale applications (bi-encoders: 39 days for 17M texts; cross-encoders: 4.7 years).
 
-    \item \textbf{Systematic Evaluation:} Comprehensive comparison of 15 embedding models across three architectural paradigms, quantifying accuracy-efficiency trade-offs for corpus-scale applications.
+    \item \textbf{STS Benchmark Transfer Analysis:} First demonstration that STS benchmark rankings \textit{inversely correlate} with plot-level similarity performance—modern models (E5: 85.2 Spearman on STS-B, 98.4\% accuracy; BGE: 85.8/98.2\%) underperform USE (78.9/99.3\%), challenging assumptions about model selection based on standard benchmarks.
 
-    \item \textbf{Strong Baseline:} Simple bi-encoder (USE + 2-layer MLP) achieves 99.3\% accuracy, establishing that pre-trained embeddings capture plot-level semantics without task-specific architectural modifications.
+    \item \textbf{LLM Evaluation:} Assessment of recent instruction-tuned LLMs (Llama 3.2 3B, Mistral 7B, Phi-3 Mini, Gemma 2B, Qwen 2.5 7B) in zero-shot and few-shot settings, showing 76-91\% accuracy—far below supervised bi-encoder baselines despite general-purpose capabilities.
 
-    \item \textbf{Scalability Analysis:} Empirical demonstration that architectural choice determines computational feasibility for large corpora: bi-encoders enable 17M text analysis in 39 days; cross-encoders require 4.7 years.
+    \item \textbf{Theoretical Analysis:} Investigation of why USE outperforms modern embeddings optimized on 2024 benchmarks, with hypotheses regarding multi-task pre-training, architectural differences (Deep Averaging Network), and benchmark-task mismatch.
 \end{enumerate}
 
-Our findings challenge assumptions about embedding model selection: while E5 and BGE outperform USE on STS benchmarks, USE achieves higher accuracy on our plot-similarity task, suggesting that benchmark performance may not transfer to compositional semantic tasks.
+Our findings challenge conventional practices for embedding model selection: benchmark leaderboards (MTEB, STS) may not predict performance on compositional semantic tasks requiring document-level understanding. We release our benchmark dataset, trained models, and evaluation code to enable further research.
 
 \section{Related Work}
 
