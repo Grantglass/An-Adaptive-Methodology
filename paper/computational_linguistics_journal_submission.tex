@@ -46,13 +46,13 @@ Department of English and Comparative Literature \\
 Recent embedding models (E5, BGE) dominate sentence-level semantic similarity benchmarks, but whether their performance transfers to document-level compositional semantic tasks remains unexplored. We introduce plot-level semantic similarity detection as an evaluation task that tests whether embeddings capture high-level narrative structure independent of lexical and stylistic features. Using Robinson Crusoe adaptations (1719-1903) as a case study, we construct a balanced binary classification dataset of 2,968 full-length texts where positive examples share core narrative patterns but differ in vocabulary, style, setting, and character names. We systematically evaluate 15 models across three architectural paradigms: bi-encoders (USE, SBERT, E5, BGE), cross-encoders (BERT, RoBERTa), and encoder-decoder models (T5, FLAN-T5), plus five recent LLMs (Llama, Mistral, Phi-3, Gemma, Qwen). Our key findings challenge conventional assumptions: (1) Universal Sentence Encoder (99.3\% accuracy) outperforms modern embeddings (E5: 98.4\%, BGE: 98.2\%) despite inferior STS benchmark scores, revealing inverse correlation between benchmark rankings and our task; (2) cross-encoders provide only 0.2\% gain at 48× computational cost, making them infeasible for corpus-scale analysis; (3) zero-shot LLMs achieve 76-91\%, far below supervised baselines. We release our benchmark dataset, models, and code, and discuss implications for embedding model selection beyond standard benchmarks.
 \end{abstract}
 
-\noindent\textbf{Keywords:} sentence embeddings, semantic similarity, plot detection, literary text analysis, document-level semantics, benchmark dataset, Universal Sentence Encoder
+\noindent\textbf{Keywords:} compositionality, distributional semantics, sentence embeddings, semantic similarity, document-level semantics, benchmark dataset, evaluation methodology
 
 \section{Introduction}
 
-Sentence embedding models are typically evaluated on sentence-level semantic textual similarity (STS) benchmarks \cite{Cer2017SemEval,Muennighoff2023MTEB}, where recent contrastive models like E5 \cite{Wang2022} and BGE \cite{Xiao2023} achieve state-of-the-art performance. However, an open question remains: \textit{does performance on sentence-level paraphrase detection transfer to document-level compositional semantic tasks}—where texts share high-level structure but differ completely in surface features?
+A central question in computational linguistics is whether distributional semantic models capture \textit{compositional} meaning---the principle that the meaning of a complex expression is determined by the meanings of its parts and how they combine \cite{Partee1995,Fodor2025Compositionality}. While sentence embedding models achieve impressive results on semantic textual similarity (STS) benchmarks \cite{Cer2017SemEval,Muennighoff2023MTEB}, these evaluations primarily test lexical paraphrase at the sentence level. An open question remains: \textit{do these models capture compositional semantics at the document level}, where texts share high-level structure but differ completely in surface features?
 
-We introduce \textbf{plot-level semantic similarity detection} as a challenging evaluation task that addresses this question. Unlike STS benchmarks that test lexical paraphrase, our task requires models to recognize narrative structure despite zero lexical overlap. Consider these examples:
+We address this question by introducing \textbf{plot-level semantic similarity detection} as a challenging evaluation task. Unlike STS benchmarks that reward lexical overlap, our task requires models to recognize abstract narrative structure despite zero lexical similarity---a strong test of compositional semantic understanding. Consider these examples:
 
 \begin{quote}
 \small
@@ -87,9 +87,17 @@ Our findings challenge conventional practices for embedding model selection: ben
 
 \section{Related Work}
 
+\subsection{Compositionality and Distributional Semantics}
+
+The \textit{Principle of Compositionality}---that the meaning of a complex expression is a function of its parts and their mode of combination---has been central to formal semantics since Frege \cite{Frege1892,Partee1995}. A fundamental challenge for computational linguistics is whether distributional semantic models, which derive meaning from statistical patterns of word co-occurrence \cite{Harris1954,Firth1957}, can capture compositional meaning beyond the word level \cite{Baroni2014Compositional,Boleda2020Distributional}.
+
+Recent work in \textit{Computational Linguistics} has addressed this question directly. \citet{Fodor2025Compositionality} introduced the STS3k benchmark to compare vector-based and syntax-based approaches to compositional sentence meaning, finding that neither paradigm fully captures human similarity judgments. \citet{VanDerWerfITCDS2022} proposed information-theoretic foundations for compositional distributional semantics, while \citet{Asher2024FormalDistributional} argued that formal and distributional semantics offer complementary insights that should be integrated.
+
+Our work extends this line of inquiry to the \textit{document level}. Where prior benchmarks test compositionality within sentences, we ask whether embeddings capture compositional structure across full-length narratives---specifically, whether models can recognize that texts share abstract plot patterns despite surface-level variation. This represents a more challenging test of compositional understanding, as it requires integrating meaning across thousands of tokens.
+
 \subsection{Sentence Embedding Models}
 
-\paragraph{Bi-Encoders} encode texts independently into fixed-dimensional vectors. Universal Sentence Encoder (USE) \cite{Cer2018} uses transformer-encoder architecture trained on SNLI \cite{Bowman2015}, conversational response prediction, and translation ranking. Sentence-BERT (SBERT) \cite{Reimers2019} fine-tunes BERT \cite{Devlin2019} using siamese networks with contrastive objectives. Variants include MPNet \cite{Song2020}, MiniLM \cite{Wang2020}, and domain-specific models \cite{Gao2021SimCSE}.
+\paragraph{Bi-Encoders} encode texts independently into fixed-dimensional vectors, following the distributional semantics tradition \cite{Turney2010VSM}. Universal Sentence Encoder (USE) \cite{Cer2018} uses transformer-encoder architecture trained on SNLI \cite{Bowman2015}, conversational response prediction, and translation ranking. Sentence-BERT (SBERT) \cite{Reimers2019} fine-tunes BERT \cite{Devlin2019} using siamese networks with contrastive objectives. Variants include MPNet \cite{Song2020}, MiniLM \cite{Wang2020}, and domain-specific models \cite{Gao2021SimCSE}.
 
 Recent work has focused on contrastive pre-training at scale. E5 \cite{Wang2022} uses weakly-supervised contrastive learning on 1B text pairs from CCNet. BGE \cite{Xiao2023} employs hard negative mining with RetroMAE \cite{Liu2022RetroMAE} pre-training. These models achieve state-of-the-art results on MTEB \cite{Muennighoff2023MTEB}, averaging 56-58\% on 56 diverse tasks.
 
@@ -337,7 +345,7 @@ All models use 4-bit quantization \cite{Dettmers2023QLoRA} for efficiency.
 
 \textbf{Hyperparameters:} All models use default settings from original papers. For neural classifier: learning rate $\alpha=0.001$, batch size 32, max epochs 50, early stopping patience 5.
 
-\textbf{Reproducibility:} Fixed random seeds (42 for all libraries). Code and data released at \url{https://github.com/[your-username]/An-Adaptive-Methodology}.
+\textbf{Reproducibility:} Fixed random seeds (42 for all libraries). Code and data released at \url{https://github.com/Grantglass/An-Adaptive-Methodology}.
 
 \subsection{Evaluation Protocol}
 
@@ -530,15 +538,21 @@ MiniLM & 82.3 & 97.9\% \\
 
 \section{Discussion}
 
+\subsection{Implications for Compositional Distributional Semantics}
+
+Our findings contribute to ongoing debates about whether distributional semantic models capture compositional meaning \cite{Baroni2014Compositional,Boleda2020Distributional}. The success of USE on plot-level similarity (99.3\% accuracy) suggests that some embedding models \textit{do} capture compositional structure at the document level, even when trained without explicit compositional objectives. This aligns with the distributional hypothesis---that words occurring in similar contexts have similar meanings \cite{Harris1954,Firth1957}---extended to the narrative level: texts describing similar sequences of events develop similar embedding representations.
+
+However, the inverse correlation between STS benchmark performance and our task raises important questions. \citet{Fodor2025Compositionality} found that neither vector-based nor syntax-based models fully capture human compositional judgments at the sentence level. Our results extend this finding to documents: models optimized for sentence-level paraphrase (E5, BGE) perform \textit{worse} on document-level compositional similarity than older models (USE) with different training objectives. This suggests that current evaluation paradigms may inadvertently optimize for surface-level similarity at the expense of deeper compositional understanding.
+
 \subsection{Why Does USE Outperform Modern Embeddings?}
 
-We hypothesize three explanations:
+We hypothesize three explanations grounded in the distributional semantics literature:
 
-\paragraph{Multi-task Pre-training} USE's training included conversational response prediction and translation tasks requiring discourse-level understanding, whereas E5/BGE focus on contrastive learning from sentence pairs.
+\paragraph{Multi-task Pre-training and Discourse Structure} USE's training included conversational response prediction and translation tasks requiring discourse-level understanding \cite{Cer2018}, whereas E5/BGE focus on contrastive learning from isolated sentence pairs. Following \citet{Turney2010VSM}, who distinguish between attributional (word-level) and relational (pattern-level) similarity, USE may better capture relational patterns across discourse.
 
-\paragraph{Architectural Differences} USE uses Deep Averaging Network with transformer encoder, potentially better suited for aggregating information across long documents than pure attention mechanisms.
+\paragraph{Architectural Differences} USE uses Deep Averaging Network with transformer encoder, potentially better suited for aggregating information across long documents than pure attention mechanisms. This relates to debates about how composition functions combine word-level distributional representations \cite{VanDerWerfITCDS2022}.
 
-\paragraph{Benchmark Mismatch} STS benchmarks reward lexical precision (paraphrase detection), while our task rewards semantic abstraction (plot recognition). These may require different inductive biases.
+\paragraph{Benchmark-Task Mismatch} STS benchmarks reward lexical precision (paraphrase detection), while our task rewards semantic abstraction (plot recognition). Following \citet{Asher2024FormalDistributional}, we suggest that integrating formal semantic structure with distributional methods may be necessary for capturing both types of similarity.
 
 \subsection{Implications for Model Selection}
 
@@ -570,26 +584,28 @@ For marginal accuracy gain (+0.2\%), the cost is prohibitive in most application
 
 \section{Conclusion}
 
-We introduced plot-level semantic similarity detection as a benchmark for evaluating sentence encoders on compositional semantic tasks. Our dataset of 2,968 full-length literary texts challenges models to recognize narrative structure despite zero lexical overlap.
+We introduced plot-level semantic similarity detection as a benchmark for evaluating whether embedding models capture compositional semantics at the document level---a fundamental question for computational linguistics \cite{Partee1995,Baroni2014Compositional}. Our dataset of 2,968 full-length literary texts challenges models to recognize narrative structure despite zero lexical overlap, extending compositional evaluation from sentences \cite{Fodor2025Compositionality} to documents.
 
-Key findings:
+Key findings with implications for the field:
 
 \begin{enumerate}
-    \item Simple bi-encoder (USE + MLP) achieves 99.3\% accuracy, establishing strong baseline
-    \item Modern embeddings (E5, BGE) underperform USE despite superior STS benchmark results
-    \item Cross-encoders provide minimal gain (+0.2\%) at 48× computational cost
-    \item Architectural choice determines feasibility of corpus-scale analysis
-    \item STS benchmark performance does not predict compositional task performance
+    \item \textbf{Compositionality is captured:} Simple bi-encoder (USE + MLP) achieves 99.3\% accuracy, demonstrating that distributional models can capture compositional structure at the document level without explicit compositional training.
+
+    \item \textbf{Benchmark rankings invert:} Modern embeddings (E5, BGE) underperform USE despite superior STS scores, revealing that sentence-level benchmarks may not predict document-level compositional performance.
+
+    \item \textbf{Architectural constraints matter:} Cross-encoders provide only 0.2\% gain at 48× computational cost, making bi-encoders necessary for corpus-scale computational linguistics research.
+
+    \item \textbf{LLMs underperform:} Zero-shot LLMs achieve only 76-91\%, far below supervised baselines, suggesting that general language understanding does not automatically confer compositional semantic abilities.
 \end{enumerate}
 
-We release our dataset, models, and code as a benchmark for long-document semantic similarity, complementing existing sentence-level STS benchmarks.
+We release our benchmark dataset, models, and code to complement existing sentence-level STS benchmarks and to advance research on compositional distributional semantics at the document level.
 
-\textbf{Future Work:} Extensions include multi-source plot detection, multilingual evaluation, and investigation of why USE outperforms models optimized on sentence-level benchmarks.
+\textbf{Future Work:} Extensions include multi-source plot detection to test compositional generalization, multilingual evaluation to examine cross-linguistic compositionality, and probing studies to understand where and how USE encodes plot structure \cite{VanDerWerfITCDS2022}.
 
 \section*{Data and Code Availability}
 
 Our dataset, trained models, and evaluation code are publicly available at: \\
-\url{https://github.com/[your-username]/An-Adaptive-Methodology}
+\url{https://github.com/Grantglass/An-Adaptive-Methodology}
 
 The dataset includes:
 \begin{itemize}

@@ -28,7 +28,7 @@ Recent embedding models (E5, BGE) dominate sentence-level semantic similarity be
 KEYWORDS
 ================================================================================
 
-sentence embeddings, semantic similarity, plot detection, literary text analysis, document-level semantics, benchmark dataset, Universal Sentence Encoder
+compositionality, distributional semantics, sentence embeddings, semantic similarity, document-level semantics, benchmark dataset, evaluation methodology
 
 ================================================================================
 MANUSCRIPT TYPE
@@ -56,7 +56,7 @@ SUBMISSION NOTES
 DATA AND CODE AVAILABILITY
 ================================================================================
 
-GitHub Repository: https://github.com/[your-username]/An-Adaptive-Methodology
+GitHub Repository: https://github.com/Grantglass/An-Adaptive-Methodology
 
 Includes:
 - Complete dataset (2,968 texts with train/val/test splits)
